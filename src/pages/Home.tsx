@@ -1,19 +1,19 @@
-import { addDateToProducts } from "../utils/productHelper";
+import { convertToFullProduct } from "../utils/productHelper";
 import { getProducts } from "../services/productsApi";
-import { ProductWIthDateType } from "../types/product";
+import { FullProduct } from "../types/product";
 import { useEffect, useState } from "react";
 import Product from "../components/Product";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<ProductWIthDateType[]>([]);
+  const [products, setProducts] = useState<FullProduct[]>([]);
 
   useEffect(() => {
     const saveProductsFromApi = async () => {
       setLoading(true);
       const response = await getProducts();
       if (response.code === "success") {
-        const productsWithDate = addDateToProducts(response.data);
+        const productsWithDate = convertToFullProduct(response.data);
         setProducts(productsWithDate);
       } else {
         console.log(response.message);

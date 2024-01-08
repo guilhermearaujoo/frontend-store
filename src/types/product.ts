@@ -11,6 +11,7 @@ export interface ProductType {
   };
 }
 
-export interface ProductWIthDateType extends ProductType {
+export interface FullProduct extends ProductType {
   date: Date;
+  quantity: number;
 }

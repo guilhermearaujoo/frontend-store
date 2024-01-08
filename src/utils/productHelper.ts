@@ -1,4 +1,4 @@
-import { ProductType, ProductWIthDateType } from "./../types/product";
+import { ProductType, FullProduct } from "./../types/product";
 
 function randomDate(start: Date, end: Date): Date {
   return new Date(
@@ -6,11 +6,12 @@ function randomDate(start: Date, end: Date): Date {
   );
 }
 
-export const addDateToProducts = (
+export const convertToFullProduct = (
   products: ProductType[]
-): ProductWIthDateType[] => {
+): FullProduct[] => {
   return products.map((product) => ({
     ...product,
     date: randomDate(new Date(2020, 0, 1), new Date()),
-  })) as ProductWIthDateType[];
+    quantity: 1,
+  })) as FullProduct[];
 };

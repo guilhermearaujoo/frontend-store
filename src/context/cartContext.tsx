@@ -1,14 +1,11 @@
 import React, { createContext, useState } from "react";
-import { ProductWIthDateType } from "../types/product";
-import {
-  addProductToLocalStorage,
-  removeProductFromLocalStorage,
-} from "../services/cartLocalStorage";
+import { FullProduct } from "../types/product";
+import { saveToLocalStorage } from "../utils/localStorageHandler";
 
 interface CartContextType {
-  products: ProductWIthDateType[];
-  setProducts: React.Dispatch<React.SetStateAction<ProductWIthDateType[]>>;
-  addProduct: (product: ProductWIthDateType) => void;
+  products: FullProduct[];
+  setProducts: React.Dispatch<React.SetStateAction<FullProduct[]>>;
+  addProduct: (product: FullProduct) => void;
   removeProduct: (id: number) => void;
 }
 
@@ -19,16 +16,41 @@ interface CartProps {
 }
 
 function Context(props: CartProps) {
-  const [products, setProducts] = useState<ProductWIthDateType[]>([]);
+  const [products, setProducts] = useState<FullProduct[]>([]);
 
-  const addProduct = (product: ProductWIthDateType) => {
-    setProducts([...products, product]);
-    addProductToLocalStorage(product);
+  const addProduct = (product: FullProduct) => {
+    if (products.find((p) => p.id === product.id)) {
+      const newProducts = products.map((p) => {
+        if (p.id === product.id) {
+          return { ...p, quantity: p.quantity + 1 };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+      saveToLocalStorage("cartProducts", newProducts);
+      return;
+    }
+
+    setProducts([...products, { ...product, quantity: 1 }]);
+    saveToLocalStorage("cartProducts", products);
   };
 
   const removeProduct = (id: number) => {
-    setProducts(products.filter((product) => product.id !== id));
-    removeProductFromLocalStorage(id);
+    if (products.find((p) => p.id === id)?.quantity !== 1) {
+      const newProducts = products.map((p) => {
+        if (p.id === id) {
+          return { ...p, quantity: p.quantity - 1 };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+      saveToLocalStorage("cartProducts", newProducts);
+      return;
+    }
+
+    const newProducts = products.filter((product) => product.id !== id);
+    setProducts(newProducts);
+    saveToLocalStorage("cartProducts", newProducts);
   };
 
   const contextValue = {

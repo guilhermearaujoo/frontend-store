@@ -1,23 +1,21 @@
 import { useContext, useEffect } from "react";
 import { CartContext } from "../context/cartContext";
-import { getProductsFromLocalStorage } from "../services/cartLocalStorage";
-import { ProductWIthDateType } from "../types/product";
-import Product from "../components/Product";
+import CartProduct from "../components/CartProduct";
+import { getFromLocalStorage } from "../utils/localStorageHandler";
 
 export default function Cart() {
   const { products, setProducts } = useContext(CartContext);
 
   useEffect(() => {
-    const productsFromLocalStorage = getProductsFromLocalStorage();
-    setProducts(
-      productsFromLocalStorage || ([] as unknown as ProductWIthDateType)
-    );
+    const productsFromLocalStorage = getFromLocalStorage("cartProducts");
+
+    setProducts([...products, ...productsFromLocalStorage]);
   }, []);
 
   return (
     <div>
       {products.map((product) => (
-        <Product key={product.id} product={product} />
+        <CartProduct key={product.id} product={product} />
       ))}
     </div>
   );
