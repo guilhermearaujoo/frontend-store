@@ -1,8 +1,12 @@
 import React, { createContext, useState } from "react";
 import { FullProduct } from "../types/product";
-import { getMinValue, getMaxValue } from "../utils/productHelper";
-
-type orderType = "asc" | "desc";
+import {
+  getMinValue,
+  getMaxValue,
+  orderByDate,
+  orderByPrice,
+} from "../utils/productHelper";
+import { orderType } from "../types/Filter";
 
 interface ProductContextType {
   products: FullProduct[];
@@ -34,27 +38,18 @@ function Context(props: CartProps) {
   const maxPrice = getMaxValue(products);
 
   const orderProductsByDate = (order: orderType) => {
-    const orderedProducts = filteredProducts.sort((a, b) => {
-      if (order === "asc") {
-        return a.inclusionDate.getTime() - b.inclusionDate.getTime();
-      } else {
-        return b.inclusionDate.getTime() - a.inclusionDate.getTime();
-      }
-    });
+    const filteredOrderedProducts = orderByDate(filteredProducts, order);
+    const orderedProducts = orderByDate(products, order);
 
-    setFilteredProducts([...orderedProducts]);
+    setFilteredProducts([...filteredOrderedProducts]);
+    setProducts([...orderedProducts]);
   };
 
   const orderProductsByValue = (order: orderType) => {
-    const orderedProducts = filteredProducts.sort((a, b) => {
-      if (order === "asc") {
-        return a.price - b.price;
-      } else {
-        return b.price - a.price;
-      }
-    });
+    const filteredOrderedProducts = orderByPrice(filteredProducts, order);
+    const orderedProducts = orderByPrice(products, order);
 
-    setFilteredProducts([...orderedProducts]);
+    setFilteredProducts([...filteredOrderedProducts]);
     setProducts([...orderedProducts]);
   };
 

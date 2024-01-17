@@ -14,6 +14,7 @@ interface CartContextType {
   removeProduct: (id: number) => void;
   alert?: Alert;
   setAlert?: React.Dispatch<React.SetStateAction<Alert>>;
+  clearCart: () => void;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
@@ -64,6 +65,11 @@ function Context(props: CartProps) {
     setAlert({ alert: "Product removed from cart", open: true });
   };
 
+  const clearCart = () => {
+    setProducts([]);
+    saveToLocalStorage("cartProducts", []);
+  };
+
   const contextValue = {
     products,
     setProducts,
@@ -71,6 +77,7 @@ function Context(props: CartProps) {
     removeProduct,
     alert,
     setAlert,
+    clearCart,
   };
 
   return (

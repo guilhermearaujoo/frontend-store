@@ -1,16 +1,20 @@
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
 import CartProduct from "./CartProduct";
-import { getFromLocalStorage } from "../../utils/localStorageHandler";
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from "../../utils/localStorageHandler";
 import { getSum, getQuantity } from "../../utils/cartHelper";
 
 export default function Cart() {
-  const { products, setProducts, setAlert } = useContext(CartContext);
+  const { products, setProducts, setAlert, clearCart } =
+    useContext(CartContext);
 
   useEffect(() => {
     const productsFromLocalStorage = getFromLocalStorage("cartProducts") || [];
 
-    setProducts([...products, ...productsFromLocalStorage]);
+    setProducts([...productsFromLocalStorage]);
   }, []);
 
   const checkout = () => {
@@ -19,7 +23,7 @@ export default function Cart() {
       return;
     }
 
-    setProducts([]);
+    clearCart();
     setAlert({ alert: "Compra realizada com sucesso!", open: true });
   };
 

@@ -1,4 +1,5 @@
 import { ProductType, FullProduct } from "./../types/product";
+import { orderType } from "../types/Filter";
 
 function randomDate(start: Date, end: Date): Date {
   return new Date(
@@ -22,4 +23,30 @@ export const getMinValue = (products: FullProduct[]): number => {
 
 export const getMaxValue = (products: FullProduct[]): number => {
   return Math.max(...products.map((product) => product.price));
+};
+
+export const orderByDate = (
+  products: FullProduct[],
+  order: orderType
+): FullProduct[] => {
+  return products.sort((a, b) => {
+    if (order === "asc") {
+      return a.inclusionDate.getTime() - b.inclusionDate.getTime();
+    } else {
+      return b.inclusionDate.getTime() - a.inclusionDate.getTime();
+    }
+  });
+};
+
+export const orderByPrice = (
+  products: FullProduct[],
+  order: orderType
+): FullProduct[] => {
+  return products.sort((a, b) => {
+    if (order === "asc") {
+      return a.price - b.price;
+    } else {
+      return b.price - a.price;
+    }
+  });
 };
