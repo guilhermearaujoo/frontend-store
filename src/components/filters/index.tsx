@@ -24,7 +24,7 @@ export default function Filters() {
     setStartTime(dayjs("2020-01-1"));
     setEndTime(dayjs(new Date()));
     setValues([minPrice, maxPrice]);
-    setName(null);
+    setName("");
     clearProducts();
   };
 
