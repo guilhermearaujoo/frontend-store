@@ -15,3 +15,11 @@ export const convertToFullProduct = (
     quantity: 1,
   })) as FullProduct[];
 };
+
+export const getMinValue = (products: FullProduct[]): number => {
+  return Math.min(...products.map((product) => product.price));
+};
+
+export const getMaxValue = (products: FullProduct[]): number => {
+  return Math.max(...products.map((product) => product.price));
+};
