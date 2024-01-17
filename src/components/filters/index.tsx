@@ -1,5 +1,3 @@
-import { FullProduct } from "../../types/product";
-import { getMinValue, getMaxValue } from "../../utils/productHelper";
 import { ProductContext } from "../../context/productContext";
 import { useContext } from "react";
 import { useState } from "react";
@@ -7,58 +5,33 @@ import DateFilter from "./DateFilter";
 import dayjs, { Dayjs } from "dayjs";
 import NameFilter from "./NameFilter";
 import ValueFilter from "./ValueFilter";
+import {
+  filterByDate,
+  filterByName,
+  filterByValue,
+} from "../../utils/filterHelper";
 
 export default function Filters() {
-  const { products, setFilteredProducts, clearProducts } =
+  const { products, setFilteredProducts, clearProducts, minPrice, maxPrice } =
     useContext(ProductContext);
-
-  const minPrice = getMinValue(products);
-  const maxPrice = getMaxValue(products);
 
   const [startTime, setStartTime] = useState<Dayjs | null>(dayjs("2020-01-1"));
   const [endTime, setEndTime] = useState<Dayjs | null>(dayjs(new Date()));
   const [values, setValues] = useState<number[]>([minPrice, maxPrice]);
   const [name, setName] = useState<string | null>(null);
 
-  const filterByDate = (currentProducts: FullProduct[]) => {
-    const filteredProducts = currentProducts.filter((product) => {
-      const productDate = dayjs(product.inclusionDate);
-      return (
-        productDate.isAfter(startTime as Dayjs) &&
-        productDate.isBefore(endTime as Dayjs)
-      );
-    });
-    return filteredProducts;
-  };
-
-  const filterByValue = (currentProducts: FullProduct[]) => {
-    const filteredProducts = currentProducts.filter((product) => {
-      const productValue = product.price;
-      return productValue >= values[0] && productValue <= values[1];
-    });
-    return filteredProducts;
-  };
-
-  const filterByName = (currentProducts: FullProduct[]) => {
-    const filteredProducts = currentProducts.filter((product) => {
-      const productName = product.title.toLowerCase();
-      return productName?.includes(name as string);
-    });
-    return filteredProducts;
-  };
-
   const clearFiltersAndProducts = () => {
     setStartTime(dayjs("2020-01-1"));
     setEndTime(dayjs(new Date()));
     setValues([minPrice, maxPrice]);
-    setName("");
+    setName(null);
     clearProducts();
   };
 
   const filter = () => {
-    const filteredByDate = filterByDate(products);
-    const filteredByValue = filterByValue(filteredByDate);
-    const filteredByName = filterByName(filteredByValue);
+    const filteredByDate = filterByDate(products, startTime, endTime);
+    const filteredByValue = filterByValue(filteredByDate, values);
+    const filteredByName = filterByName(filteredByValue, name);
 
     setFilteredProducts(filteredByName);
   };

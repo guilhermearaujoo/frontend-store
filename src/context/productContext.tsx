@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { FullProduct } from "../types/product";
+import { getMinValue, getMaxValue } from "../utils/productHelper";
 
 interface ProductContextType {
   products: FullProduct[];
@@ -7,6 +8,8 @@ interface ProductContextType {
   filteredProducts: FullProduct[];
   setFilteredProducts: React.Dispatch<React.SetStateAction<FullProduct[]>>;
   clearProducts: () => void;
+  minPrice: number;
+  maxPrice: number;
 }
 
 export const ProductContext = createContext<ProductContextType | null>(null);
@@ -23,12 +26,17 @@ function Context(props: CartProps) {
     setFilteredProducts(products);
   };
 
+  const minPrice = getMinValue(products);
+  const maxPrice = getMaxValue(products);
+
   const contextValue = {
     products,
     setProducts,
     filteredProducts,
     setFilteredProducts,
     clearProducts,
+    minPrice,
+    maxPrice,
   };
 
   return (
