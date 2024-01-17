@@ -8,7 +8,7 @@ export default function Products() {
   return (
     <div>
       {filteredProducts.map((product) => (
-        <Product key={product.id} product={product} />
+        <Product key={product.description} product={product} />
       ))}
     </div>
   );
