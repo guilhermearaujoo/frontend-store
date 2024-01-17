@@ -12,6 +12,6 @@ export interface ProductType {
 }
 
 export interface FullProduct extends ProductType {
-  date: Date;
+  inclusionDate: Date;
   quantity: number;
 }

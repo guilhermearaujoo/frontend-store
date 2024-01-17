@@ -12,7 +12,7 @@ interface ProductContextType {
 export const ProductContext = createContext<ProductContextType | null>(null);
 
 interface CartProps {
-  children: JSX.Element[];
+  children: JSX.Element;
 }
 
 function Context(props: CartProps) {

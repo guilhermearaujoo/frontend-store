@@ -14,7 +14,9 @@ export default function Product({ product }: ProductProps) {
       <img src={product.image} alt={product.title} width={50} height={50} />
       <h3>{product.title}</h3>
       <p>{product.price}</p>
-      <p>{`${product.date.getMonth()} / ${product.date.getFullYear()}`}</p>
+      <p
+        style={{ margin: "10px" }}
+      >{`${product.inclusionDate.getUTCMonth()} / ${product.inclusionDate.getFullYear()}`}</p>
       <button onClick={() => addProduct(product)}>Add</button>
     </div>
   );

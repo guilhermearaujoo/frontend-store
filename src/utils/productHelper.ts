@@ -11,7 +11,7 @@ export const convertToFullProduct = (
 ): FullProduct[] => {
   return products.map((product) => ({
     ...product,
-    date: randomDate(new Date(2020, 0, 1), new Date()),
+    inclusionDate: randomDate(new Date(2020, 0, 1), new Date()),
     quantity: 1,
   })) as FullProduct[];
 };

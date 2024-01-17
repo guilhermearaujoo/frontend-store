@@ -1,41 +1,29 @@
 import { DatePicker } from "@mui/x-date-pickers/";
-import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
-import { useContext } from "react";
-import { ProductContext } from "../../context/productContext";
+import { Dayjs } from "dayjs";
 
-export default function Filters() {
-  const { products, setFilteredProducts, clearProducts } =
-    useContext(ProductContext);
+interface DateFilterProps {
+  startTime: Dayjs | null;
+  endTime: Dayjs | null;
+  setStartTime: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  setEndTime: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+}
 
-  const [startValue, setStartValue] = useState<Dayjs | null>(
-    dayjs("2020-01-1")
-  );
-  const [endValue, setEndValue] = useState<Dayjs | null>(dayjs(new Date()));
-
-  const filterByDate = () => {
-    const filteredProducts = products.filter((product) => {
-      const productDate = dayjs(product.date);
-      return (
-        productDate.isAfter(startValue as Dayjs) &&
-        productDate.isBefore(endValue as Dayjs)
-      );
-    });
-    setFilteredProducts(filteredProducts);
-  };
-
+export default function DateFilter({
+  setStartTime,
+  setEndTime,
+  startTime,
+  endTime,
+}: DateFilterProps) {
   return (
     <div>
       <DatePicker
-        value={startValue}
-        onChange={(newValue) => setStartValue(newValue)}
+        value={startTime}
+        onChange={(newValue) => setStartTime(newValue)}
       />
       <DatePicker
-        value={endValue}
-        onChange={(newValue) => setEndValue(newValue)}
+        value={endTime}
+        onChange={(newValue) => setEndTime(newValue)}
       />
-      <button onClick={filterByDate}>Filter</button>
-      <button onClick={clearProducts}>Clear</button>
     </div>
   );
 }
