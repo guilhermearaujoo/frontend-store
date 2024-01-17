@@ -12,43 +12,44 @@ interface CartContextType {
 export const CartContext = createContext<CartContextType | null>(null);
 
 interface CartProps {
-  children: JSX.Element;
+  children: JSX.Element[];
 }
 
 function Context(props: CartProps) {
   const [products, setProducts] = useState<FullProduct[]>([]);
 
   const addProduct = (product: FullProduct) => {
+    let newProducts = products;
+
     if (products.find((p) => p.id === product.id)) {
-      const newProducts = products.map((p) => {
+      newProducts = products.map((p) => {
         if (p.id === product.id) {
           return { ...p, quantity: p.quantity + 1 };
         }
         return p;
       });
-      setProducts(newProducts);
-      saveToLocalStorage("cartProducts", newProducts);
-      return;
+    } else {
+      newProducts = [...products, { ...product, quantity: 1 }];
     }
 
-    setProducts([...products, { ...product, quantity: 1 }]);
-    saveToLocalStorage("cartProducts", products);
+    setProducts(newProducts);
+    saveToLocalStorage("cartProducts", newProducts);
   };
 
   const removeProduct = (id: number) => {
+    let newProducts = products;
+
     if (products.find((p) => p.id === id)?.quantity !== 1) {
-      const newProducts = products.map((p) => {
+      newProducts = products.map((p) => {
         if (p.id === id) {
           return { ...p, quantity: p.quantity - 1 };
         }
         return p;
       });
-      setProducts(newProducts);
-      saveToLocalStorage("cartProducts", newProducts);
-      return;
+    } else {
+      newProducts = products.filter((product) => product.id !== id);
     }
 
-    const newProducts = products.filter((product) => product.id !== id);
     setProducts(newProducts);
     saveToLocalStorage("cartProducts", newProducts);
   };
