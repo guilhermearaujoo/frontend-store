@@ -1,13 +1,14 @@
-import Products from "../components/products";
-import CartContext from "../context/cartContext";
-import Cart from "../components/cart";
-import Filters from "../components/filters";
-import Order from "../components/order";
 import { convertToFullProduct } from "../utils/productHelper";
 import { getProducts } from "../services/productsApi";
-import { useEffect, useState } from "react";
 import { ProductContext } from "../context/productContext";
 import { useContext } from "react";
+import { useEffect, useState } from "react";
+import Alert from "../components/alert";
+import Cart from "../components/cart";
+import CartContext from "../context/cartContext";
+import Filters from "../components/filters";
+import Order from "../components/order";
+import Products from "../components/products";
 
 export default function Home() {
   const { setProducts, setFilteredProducts } = useContext(ProductContext);
@@ -45,6 +46,7 @@ export default function Home() {
             </div>
             <Products />
             <Cart />
+            <Alert />
           </>
         )}
       </CartContext>

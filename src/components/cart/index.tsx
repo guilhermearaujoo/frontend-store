@@ -2,16 +2,26 @@ import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cartContext";
 import CartProduct from "./CartProduct";
 import { getFromLocalStorage } from "../../utils/localStorageHandler";
-import { getSum } from "../../utils/cartHelper";
+import { getSum, getQuantity } from "../../utils/cartHelper";
 
 export default function Cart() {
-  const { products, setProducts } = useContext(CartContext);
+  const { products, setProducts, setAlert } = useContext(CartContext);
 
   useEffect(() => {
     const productsFromLocalStorage = getFromLocalStorage("cartProducts") || [];
 
     setProducts([...products, ...productsFromLocalStorage]);
   }, []);
+
+  const checkout = () => {
+    if (products.length === 0) {
+      setAlert({ alert: "Carrinho vazio!", open: true });
+      return;
+    }
+
+    setProducts([]);
+    setAlert({ alert: "Compra realizada com sucesso!", open: true });
+  };
 
   return (
     <div>
@@ -21,7 +31,8 @@ export default function Cart() {
 
       <div>
         <h3>Total: {getSum(products)}</h3>
-        <button>Checkout</button>
+        <p>Items: {getQuantity(products)}</p>
+        <button onClick={checkout}>Checkout</button>
       </div>
     </div>
   );
