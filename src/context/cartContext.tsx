@@ -2,21 +2,29 @@ import React, { createContext, useState } from "react";
 import { FullProduct } from "../types/product";
 import { saveToLocalStorage } from "../utils/localStorageHandler";
 
+type Alert = {
+  alert: string;
+  open: boolean;
+};
+
 interface CartContextType {
   products: FullProduct[];
   setProducts: React.Dispatch<React.SetStateAction<FullProduct[]>>;
   addProduct: (product: FullProduct) => void;
   removeProduct: (id: number) => void;
+  alert?: Alert;
+  setAlert?: React.Dispatch<React.SetStateAction<Alert>>;
 }
 
 export const CartContext = createContext<CartContextType | null>(null);
 
 interface CartProps {
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
 }
 
 function Context(props: CartProps) {
   const [products, setProducts] = useState<FullProduct[]>([]);
+  const [alert, setAlert] = useState<Alert>({ alert: "", open: false });
 
   const addProduct = (product: FullProduct) => {
     let newProducts = products;
@@ -34,6 +42,7 @@ function Context(props: CartProps) {
 
     setProducts(newProducts);
     saveToLocalStorage("cartProducts", newProducts);
+    setAlert({ alert: "Product added to cart", open: true });
   };
 
   const removeProduct = (id: number) => {
@@ -52,6 +61,7 @@ function Context(props: CartProps) {
 
     setProducts(newProducts);
     saveToLocalStorage("cartProducts", newProducts);
+    setAlert({ alert: "Product removed from cart", open: true });
   };
 
   const contextValue = {
@@ -59,6 +69,8 @@ function Context(props: CartProps) {
     setProducts,
     addProduct,
     removeProduct,
+    alert,
+    setAlert,
   };
 
   return (
