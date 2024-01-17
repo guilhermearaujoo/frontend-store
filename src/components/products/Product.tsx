@@ -1,6 +1,6 @@
-import { FullProduct } from "../types/product";
+import { FullProduct } from "../../types/product";
 import { useContext } from "react";
-import { CartContext } from "../context/cartContext";
+import { CartContext } from "../../context/cartContext";
 
 interface ProductProps {
   product: FullProduct;
@@ -14,6 +14,7 @@ export default function Product({ product }: ProductProps) {
       <img src={product.image} alt={product.title} width={50} height={50} />
       <h3>{product.title}</h3>
       <p>{product.price}</p>
+      <p>{`${product.date.getMonth()} / ${product.date.getFullYear()}`}</p>
       <button onClick={() => addProduct(product)}>Add</button>
     </div>
   );

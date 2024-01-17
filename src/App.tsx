@@ -1,25 +1,18 @@
 import Home from "./pages/Home";
-import { useEffect, useState } from "react";
-import Context from "./context/cartContext";
-import Cart from "./pages/Cart";
 import "./styles/index.css";
+import Filters from "./components/filters/DateFilter";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import ProductContext from "./context/productContext";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  return loading ? (
-    <p>loading...</p>
-  ) : (
-    <Context>
-      <div className="layout">
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ProductContext>
+        <Filters />
         <Home />
-        <Cart />
-      </div>
-    </Context>
+      </ProductContext>
+    </LocalizationProvider>
   );
 }
 

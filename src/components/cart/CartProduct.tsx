@@ -1,6 +1,6 @@
-import { FullProduct } from "../types/product";
+import { FullProduct } from "../../types/product";
 import { useContext } from "react";
-import { CartContext } from "../context/cartContext";
+import { CartContext } from "../../context/cartContext";
 
 interface ProductProps {
   product: FullProduct;
